@@ -1,0 +1,27 @@
+{% extends "qtable_app/base.html" %}
+
+{% block content %}
+
+<h2>Quotes List</h2>
+{% for quote in quotes.results %}
+<p class="m-0, mt-5">{{ quote.content }}</p>
+<small>Author: {{ quote.author }}</small>
+{% endfor %}
+<nav class="pt-5" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link{% if quotes.page == 1 %} disabled{% else %} text-primary text-opacity-75{% endif %}"
+               {% if quotes.page != 1 %}href="{% url 'qtable_app:quotes' quotes.page|add:'-1' %}"{% endif %}>
+                Previous
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link{% if quotes.page == quotes.totalPages %} disabled{% else %} text-primary text-opacity-75{% endif %}"
+               {% if quotes.page != quotes.totalPages %}href="{% url 'qtable_app:quotes' quotes.page|add:'1' %}"{% endif %}>
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
+{% endblock %}
