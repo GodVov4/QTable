@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
-    <title>QTable</title>
+    <title>{{ title }}</title>
 </head>
 <body class="d-flex text-center text-bg-dark">
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -20,11 +20,24 @@
         <div>
             <h3 class="float-md-start mb-0">QTable</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="{% url 'qtable_app:index' %}">
+                <a class="nav-link fw-bold py-1 px-0{% if request.path == '/' %} active{% endif %}"
+                   aria-current="page" href="{% url 'qtable_app:index' %}">
                     Home
                 </a>
-                <a class="nav-link fw-bold py-1 px-0" href="{% url 'qtable_app:quotes' 1 %}">List</a>
-                <a class="nav-link fw-bold py-1 px-0" href="#">Contact</a>
+                <a class="nav-link fw-bold py-1 px-0{% if 'quotes' in request.path %} active{% endif %}"
+                   href="{% url 'qtable_app:quotes' 1 %}">List</a>
+                {% if user.is_authenticated %}
+                <form class="ms-3" action="{% url 'users:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="nav-link fw-bold py-1 px-0{% if 'logout' in request.path %} active{% endif %}"
+                            type="submit">Log out</button>
+                </form>
+                {% else %}
+                <a class="nav-link fw-bold py-1 px-0{% if 'signup' in request.path %} active{% endif %}"
+                   href="{% url 'users:signup' %}">Sign up</a>
+                <a class="nav-link fw-bold py-1 px-0{% if 'login' in request.path %} active{% endif %}"
+                   href="{% url 'users:login' %}">Login</a>
+                {% endif %}
             </nav>
         </div>
     </header>
