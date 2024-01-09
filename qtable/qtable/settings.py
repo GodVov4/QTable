@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_email_verification',
     'qtable_app.apps.QtableAppConfig',
     'users.apps.UsersConfig',
 ]
@@ -130,8 +131,7 @@ LOGOUT_REDIRECT_URL = 'users:login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_STARTTLS = False
@@ -140,3 +140,38 @@ EMAIL_USE_TLS = False
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+def email_verified_callback(user):
+    user.is_active = True
+
+
+def password_change_callback(user, password):
+    user.set_password(password)
+
+
+# Global Package Settings
+EMAIL_FROM_ADDRESS = EMAIL_HOST_USER
+EMAIL_PAGE_DOMAIN = env('EMAIL_PAGE_DOMAIN')
+EMAIL_MULTI_USER = False
+
+# Email Verification Settings (mandatory for email sending)
+EMAIL_MAIL_SUBJECT = 'Confirm your email {{ user.username }}'
+EMAIL_MAIL_HTML = 'users/mail_body.html'
+EMAIL_MAIL_PLAIN = 'users/mail_body.txt'
+EMAIL_MAIL_TOKEN_LIFE = 60 * 60  # one hour
+
+# Email Verification Settings (mandatory for builtin view)
+EMAIL_MAIL_PAGE_TEMPLATE = 'users/email_success_template.html'
+EMAIL_MAIL_CALLBACK = email_verified_callback
+
+# Password Recovery Settings (mandatory for email sending)
+EMAIL_PASSWORD_SUBJECT = 'Change your password {{ user.username }}'
+EMAIL_PASSWORD_HTML = 'users/password_body.html'
+EMAIL_PASSWORD_PLAIN = 'users/password_body.txt'
+EMAIL_PASSWORD_TOKEN_LIFE = 60 * 10  # 10 minutes
+
+# Password Recovery Settings (mandatory for builtin view)
+EMAIL_PASSWORD_PAGE_TEMPLATE = 'users/password_changed_template.html'
+EMAIL_PASSWORD_CHANGE_PAGE_TEMPLATE = 'users/password_change_template.html'
+EMAIL_PASSWORD_CALLBACK = password_change_callback

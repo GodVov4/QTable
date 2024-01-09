@@ -1,0 +1,14 @@
+{% extends "qtable_app/base.html" %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 83vh;">
+    {% if success %}
+    <h3>{{ user.username }}, your account is confirmed! Let's log in</h3>
+    {% else %}
+    <h3>Error, invalid token!</h3>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
