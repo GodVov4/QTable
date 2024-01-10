@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django_email_verification import send_email
@@ -24,6 +24,6 @@ class RegisterView(CreateView):
 def confirm_email(request, pk):
     context = {
         'title': 'Confirm email',
-        'user': User.objects.get(pk=pk),
+        'user': get_object_or_404(User, pk=pk),
     }
     return render(request, 'users/confirm_email.html', context)

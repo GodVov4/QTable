@@ -20,13 +20,15 @@
         <div>
             <h3 class="float-md-start mb-0">QTable</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link fw-bold py-1 px-0{% if request.path == '/' %} active{% endif %}"
+                <a class="nav-link fw-bold py-1 px-0{% if request.path|length <= 3 %} active{% endif %}"
                    aria-current="page" href="{% url 'qtable_app:index' %}">
                     Home
                 </a>
                 <a class="nav-link fw-bold py-1 px-0{% if 'quotes' in request.path %} active{% endif %}"
                    href="{% url 'qtable_app:quotes' 1 %}">List</a>
                 {% if user.is_authenticated %}
+                <a class="nav-link fw-bold py-1 px-0{% if 'favorites' in request.path %} active{% endif %}"
+                   href="{% url 'qtable_app:favorites' %}">Favorites</a>
                 <form class="ms-3" action="{% url 'users:logout' %}" method="post">
                     {% csrf_token %}
                     <button class="nav-link fw-bold py-1 px-0{% if 'logout' in request.path %} active{% endif %}"

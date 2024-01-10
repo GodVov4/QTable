@@ -1,2 +1,3 @@
 .idea
 .env
+/qtable/db.sqlite3
