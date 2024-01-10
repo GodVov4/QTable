@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
 }
 
 
@@ -142,11 +143,25 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-def email_verified_callback(user):
+def email_verified_callback(user) -> None:
+    """
+    Set the 'is_active' flag of the specified user to True.
+
+    :param user: The user object whose 'is_active' flag needs to be set.
+    :type user: User
+    """
     user.is_active = True
 
 
-def password_change_callback(user, password):
+def password_change_callback(user, password: str) -> None:
+    """
+    Change the password of a user.
+
+    :param user: The user object for which the password needs to be changed.
+    :type user: User
+    :param password: The new password for the user.
+    :type password: str
+    """
     user.set_password(password)
 
 
