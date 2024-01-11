@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "qtable"
 version = "0.1.0"
-description = ""
+description = "QTable - Quote of day with django"
 authors = ["GodVov4 <volume245@gmail.com>"]
 readme = "README.md"
 
