@@ -26,7 +26,7 @@ environ.Env.read_env(BASE_DIR.parent / '.env')
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = bool(env('DEBUG'))
 
 ALLOWED_HOSTS = [env('DJANGO_ALLOWED_HOSTS')]
 
@@ -143,7 +143,7 @@ LOGOUT_REDIRECT_URL = 'users:login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_STARTTLS = False
